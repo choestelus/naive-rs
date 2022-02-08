@@ -3,6 +3,7 @@ mod naive_vec;
 #[cfg(test)]
 mod tests {
     use crate::naive_vec::NaiveVec;
+    use std::ops::Deref;
 
     #[test]
     fn zero_sized_type_vector_push_pop_works_correctly() {
@@ -54,5 +55,19 @@ mod tests {
         let elem = v.remove(1);
         assert_eq!(elem, 2);
         assert_eq!(v.len(), 3);
+    }
+
+    #[test]
+    // testing on Deref implementation as [T]
+    // comparison using [i64]
+    fn deref_vec_works() {
+        let mut v: NaiveVec<i64> = NaiveVec::new();
+        v.push(1);
+        v.push(2);
+        v.push(3);
+        v.push(4);
+        let dv = v.deref();
+        let expected: [i64; 3] = [2, 3, 4];
+        assert_eq!(dv[1..], *expected.as_ref());
     }
 }
